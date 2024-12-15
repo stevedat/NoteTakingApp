@@ -1,114 +1,85 @@
-const newNoteInput = document.getElementById('new-note');
-const saveButton = document.getElementById('save-button');
-const notesList = document.getElementById('notes-list');
-let isEmojiPickerVisible = false; // Flag for emoji picker visibility
+const notesContainer = document.getElementById('notes-container');
+const newNoteInput = document.querySelector('#new-note textarea');
+const addNoteButton = document.getElementById('add-note');
+
+let notes = []; // Array to store note data
 
 
-// Load notes from local storage
-// ... (loadNotes function remains the same) ...
-
-//Emoji Picker function
-
-function toggleEmojiPicker() {
-
-  const emojiPicker = document.getElementById('emoji-picker');
-
-  if (!emojiPicker) { // Create if it doesn't exist
-    const picker = new EmojiPicker({
-        trigger: [
-            {
-                selector: '#emoji-button', // Trigger element ID
-                insertInto: '#new-note', // Text area to insert emoji
-            },
-
-        ],
-        closeButton: true,
-    });
-    picker.render(); // Render the emoji picker
+// Function to add a new note
+function addNote() {
+    const noteText = newNoteInput.value.trim();
 
 
+  if (noteText !== "") {
+        const note = {
+
+              // Extract title (first line) and content
+              title: noteText.split('\n')[0] || 'Untitled Note', // Default to 'Untitled Note'
+              content: noteText.split('\n').slice(1).join('\n') || '',  // Rest of the content
+
+        }
+
+      notes.push(note);
+      renderNotes();
+      newNoteInput.value = ''; // Clear input field
   }
-
-
 }
 
 
 
 
-
-function saveNote() {
-    // ... (saveNote function remains the same) ...
-}
-
-function addNoteToList(noteText, index = null) {
-    // ... (addNoteToList function remains the same) ...
+function deleteNote(index) {
+  notes.splice(index, 1);
+  renderNotes(); // Re-render the notes list
 }
 
 
-function deleteNote(noteItem, noteText) {
-   // ... (deleteNote function remains the same) ...
+function renderNotes() {
+
+  notesContainer.innerHTML = ''; // Clear existing notes
+
+  notes.forEach((note, index) => {
+
+
+        const noteElement = document.createElement('div');
+      noteElement.classList.add('note');
+            noteElement.innerHTML = `
+                <div class="note-title">${note.title}</div>
+                <div class="note-content">${note.content}</div>
+
+            `
+
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('delete-button');
+      deleteButton.textContent = '×';  // Use multiplication symbol for delete
+      deleteButton.addEventListener('click', () => deleteNote(index));
+      noteElement.appendChild(deleteButton);
+
+      notesContainer.appendChild(noteElement);
+
+
+
+
+  });
+
+    // Store updated notes in local storage
+    localStorage.setItem('notes', JSON.stringify(notes));
+
+
 }
 
 
+// Load notes from local storage on page load
+function loadNotes() {
+  const storedNotes = localStorage.getItem('notes');
+  if (storedNotes) {
+    notes = JSON.parse(storedNotes);
+    renderNotes();
+  }
+}
 
 
-saveButton.addEventListener('click', saveNote);
+addNoteButton.addEventListener('click', addNote);
 
-// Load initial notes
+// Load initial notes on page load
 loadNotes();
-
-// Edit Functionality
-// ... (double click edit functionality remains the same) ...
-
-
-//EMOJI button
-
-const emojiButton = document.createElement('button');
-emojiButton.textContent = '😀'; // You can change the emoji if you prefer.
-emojiButton.id = 'emoji-button'
-emojiButton.addEventListener('click', toggleEmojiPicker);
-document.body.appendChild(emojiButton);
-
-
-
-
-//Hashtags
-newNoteInput.addEventListener('input', function() {
-  const text = this.value;
-  const hashtags = text.match(/#[\w]+/g) || []; // Extract hashtags
-    console.log("Hashtags", hashtags)
-
-  // You can now process the hashtags, e.g., display them below the input
-    const hashtagsContainer = document.getElementById('hashtags') || createHashtagsContainer() ; // Get or create container
-
-    hashtagsContainer.innerHTML = ""; // Clear previous hashtags
-
-
-    hashtags.forEach(hashtag => {
-
-        const hashtagElement = document.createElement('span');
-        hashtagElement.textContent = hashtag;
-        hashtagElement.classList.add('hashtag');
-        hashtagsContainer.appendChild(hashtagElement)
-    });
-
-
-});
-
-
-
-function createHashtagsContainer(){
-    const hashtagsContainer = document.createElement('div');
-    hashtagsContainer.id = 'hashtags';
-    document.body.appendChild(hashtagsContainer); // Append to the body or wherever you want it
-      return hashtagsContainer;
-
-
-}
-
-
-
-
-// Add EmojiPicker library using a script tag (you'll need to include the library)
-// Example (if using jsdelivr CDN):
-// <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
