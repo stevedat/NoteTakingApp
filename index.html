@@ -1,29 +1,125 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2566">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none}
+  <title>Simple Note Taker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    #new-note {
+      width: 100%;
+      height: 100px;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    #notes-list {
+      list-style: none;
+      padding: 0;
+    }
+    .note {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .delete-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="styles.css"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Note Taking App&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Welcome to the Note Taking App&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="script.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+
+  <h1>My Notes</h1>
+
+  <textarea id="new-note" placeholder="Enter your note here..."></textarea>
+  <button id="save-button">Save Note</button>
+
+  <ul id="notes-list"></ul>
+
+  <script>
+    const newNoteInput = document.getElementById('new-note');
+    const saveButton = document.getElementById('save-button');
+    const notesList = document.getElementById('notes-list');
+
+    // Load notes from local storage
+      function loadNotes() {
+        const savedNotes = localStorage.getItem('notes');
+
+    if (savedNotes) {
+        const notesArray = JSON.parse(savedNotes);
+        notesArray.forEach(noteText => {
+        addNoteToList(noteText)
+        });
+    }
+    }
+
+
+    function saveNote() {
+          const noteText = newNoteInput.value.trim();
+
+      if (noteText !== "") {
+
+          addNoteToList(noteText); // Add to the UI immediately
+
+
+          // Save to local storage
+          const savedNotes = localStorage.getItem('notes') || '[]'; // Get existing notes or an empty array
+          const notesArray = JSON.parse(savedNotes); //parse string to array
+          notesArray.push(noteText); // Push new note
+          localStorage.setItem('notes', JSON.stringify(notesArray)); //save to local storage
+
+
+          newNoteInput.value = '';
+        }
+    }
+
+
+    function addNoteToList(noteText) {
+        const newNoteItem = document.createElement('li');
+        newNoteItem.classList.add('note');
+        newNoteItem.textContent = noteText;
+
+
+          // Add delete button
+          const deleteButton = document.createElement('span');
+          deleteButton.textContent = 'X'; // or use an "X" symbol
+          deleteButton.classList.add('delete-button');
+          deleteButton.addEventListener('click', () => {
+              deleteNote(newNoteItem, noteText);
+
+          });
+        newNoteItem.appendChild(deleteButton);    
+
+        notesList.appendChild(newNoteItem);
+    }
+
+    function deleteNote(noteItem, noteText) {
+        notesList.removeChild(noteItem);  // Remove from UI
+
+        // Remove from local storage
+        const savedNotes = localStorage.getItem('notes') ;
+        const notesArray = JSON.parse(savedNotes);
+
+        const index = notesArray.indexOf(noteText);
+
+        if(index > -1){
+          notesArray.splice(index, 1)
+        }
+
+
+        localStorage.setItem('notes', JSON.stringify(notesArray))
+    }
+
+    saveButton.addEventListener('click', saveNote);
+
+    // Load initial notes on page load
+    loadNotes();
+
+  </script>
+
 </body>
 </html>
