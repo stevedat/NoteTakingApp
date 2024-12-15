@@ -1,110 +1,224 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Note Taker</title>
-  <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbmjtWHjQBzRdqtPd3ogBlegHnAI2uPkcVvAHU2KdVpRwtBhsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
   <style>
-    /* ... (CSS styles from the updated style.css) ... */
-        #preview-area {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 8px;
-
-        }
-
-        .hashtag {
-            background-color: #eee;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border-radius: 5px;
-            cursor: pointer; /* Make hashtags clickable */
-        }
-        #emoji-button {
-            font-size: 20px;
-            margin-left: 10px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            padding: 0;
-
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    h1 {
+      font-weight: 600;
+      text-align: center;
+      color: #4a90e2;
+    }
+    #new-note {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 100px;
+      outline: none;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #save-button {
+      background-color: #4a90e2;
+      color: white;
+    }
+    #emoji-button, #dark-mode-toggle {
+      font-size: 20px;
+      background: none;
+      cursor: pointer;
+    }
+    #preview-button, #download-button {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    #hashtags {
+      margin-top: 10px;
+    }
+    .hashtag {
+      display: inline-block;
+      background-color: #eee;
+      padding: 5px 10px;
+      margin: 3px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #preview-area {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      background-color: white;
+    }
+    #theme-selector {
+      margin: 10px 0;
+      padding: 5px;
+      font-size: 16px;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+    /* Dark Mode */
+    .dark-mode {
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+    .dark-mode button {
+      background-color: #4a90e2;
+      color: white;
+    }
+    /* Themes */
+    .pastel {
+      background-color: #fdf1f1;
+      color: #2d2d2d;
+    }
+    .modern-dark {
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+    }
   </style>
 </head>
 <body>
+  <h1>My Notes</h1>
+  
+  <div id="controls">
+    <div contenteditable="true" id="new-note" placeholder="Enter your note here..."></div>
+    <button id="save-button">Save Note</button>
+    <button id="emoji-button">😀</button>
+    <button id="dark-mode-toggle">🌙</button>
+    <select id="theme-selector">
+      <option value="default">Default</option>
+      <option value="pastel">Pastel</option>
+      <option value="modern-dark">Modern Dark</option>
+    </select>
+  </div>
+  
+  <div id="hashtags"></div>
+  
+  <button id="preview-button">Preview</button>
+  <button id="download-button">Download PDF</button>
+  <div id="preview-area"></div>
+  
+  <ul id="notes-list"></ul>
+  
+  <script>
+    // Dark Mode Toggle
+    const toggleDarkMode = () => {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+    };
+    document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+    }
 
-<h1>My Notes</h1>
-
-<textarea id="new-note" placeholder="Enter your note here..."></textarea>
-
-<button id="save-button">Save Note</button>
-<button id="emoji-button">😀</button>
-<div id="hashtags"></div>  
-
-<button id="preview-button">Preview</button>
-<button id="download-button">Download PDF</button>
-<div id="preview-area" style="display:none;"></div>
-
-
-<ul id="notes-list"></ul>
-
-
-<script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
-<script>
-  // ... (JavaScript code from updated script.js) ...
-
-        const previewButton = document.getElementById('preview-button');
-    const previewArea = document.getElementById('preview-area');
-
-    previewButton.addEventListener('click', () => {
-      const notes = Array.from(document.querySelectorAll('.note')).map(note => note.textContent.trim());
-
-        previewArea.innerHTML = ""; // Clear Previous content
-
-        notes.forEach(note => {
-           const noteElement = document.createElement('p')
-            noteElement.classList.add('note');  //add note class for styling
-            noteElement.textContent = note;
-            previewArea.appendChild(noteElement)
-
-
-        });
-      previewArea.style.display = 'block';
-
+    // Theme Selector
+    const themeSelector = document.getElementById('theme-selector');
+    themeSelector.addEventListener('change', (e) => {
+      document.body.className = '';
+      document.body.classList.add(e.target.value);
     });
 
+    // Note Management
+    const notesList = document.getElementById('notes-list');
+    const previewButton = document.getElementById('preview-button');
+    const previewArea = document.getElementById('preview-area');
+    const downloadButton = document.getElementById('download-button');
 
+    const saveNote = () => {
+      const noteContent = document.getElementById('new-note').textContent.trim();
+      if (noteContent) {
+        const li = document.createElement('li');
+        li.textContent = noteContent;
+        li.classList.add('note');
+        notesList.appendChild(li);
+        document.getElementById('new-note').textContent = '';
+      }
+    };
 
+    document.getElementById('save-button').addEventListener('click', saveNote);
 
-      // Download as PDF
-      const downloadButton = document.getElementById('download-button');
+    // Preview Notes
+    previewButton.addEventListener('click', () => {
+      previewArea.innerHTML = '';
+      const notes = Array.from(document.querySelectorAll('.note')).map(note => note.textContent.trim());
+      notes.forEach(note => {
+        const noteElement = document.createElement('p');
+        noteElement.textContent = note;
+        previewArea.appendChild(noteElement);
+      });
+      previewArea.style.display = 'block';
+    });
 
-        downloadButton.addEventListener('click', () => {
-            const element = document.getElementById('preview-area');
+    // Download as PDF
+    downloadButton.addEventListener('click', () => {
+      const element = document.getElementById('preview-area');
+      if (element.textContent) {
+        const opt = {
+          margin: 1,
+          filename: 'my_notes.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(opt).save();
+      }
+    });
 
-            if(element.textContent){
-                const opt = {
-                    margin:       1,
-                    filename:     'my_notes.pdf',
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2 }, //increase scale for better quality
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
+    // Hashtag Suggestions
+    const noteInput = document.getElementById('new-note');
+    const hashtagContainer = document.getElementById('hashtags');
 
+    noteInput.addEventListener('input', () => {
+      hashtagContainer.innerHTML = '';
+      const words = noteInput.textContent.split(' ');
+      const hashtags = words.filter(word => word.startsWith('#'));
+      hashtags.forEach(tag => {
+        const hashtagElement = document.createElement('span');
+        hashtagElement.className = 'hashtag';
+        hashtagElement.textContent = tag;
+        hashtagContainer.appendChild(hashtagElement);
+      });
+    });
 
-                  // New Promise-based usage:
-                  html2pdf().from(element).set(opt).save();
-
-
-            }
-
-
-
-        });
-
-</script>
-
+    // Emoji Picker
+    const picker = new EmojiButton();
+    document.getElementById('emoji-button').addEventListener('click', () => {
+      picker.togglePicker(document.getElementById('emoji-button'));
+    });
+    picker.on('emoji', emoji => {
+      document.getElementById('new-note').textContent += emoji;
+    });
+  </script>
 </body>
 </html>
