@@ -3,21 +3,10 @@
 <head>
   <title>Note Taker</title>
   <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbmjtWHjQBzRdqtPd3ogBlegHnAI2uPkcVvAHU2KdVpRwtBhsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-    <style>
-
-        /* Basic style for the edit input area */
-        .edit-input{
-            width: 100%;
-            height: 100px;
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-
-        }
-
+  <style>
+    /* ... (CSS styles from the updated style.css) ... */
         #preview-area {
             border: 1px solid #ccc;
             padding: 10px;
@@ -42,9 +31,7 @@
             padding: 0;
 
         }
-
-
-    </style>
+  </style>
 </head>
 <body>
 
@@ -53,57 +40,38 @@
 <textarea id="new-note" placeholder="Enter your note here..."></textarea>
 
 <button id="save-button">Save Note</button>
-<button id="emoji-button">😀</button> <div id="hashtags"></div>
+<button id="emoji-button">😀</button>
+<div id="hashtags"></div>  
 
 <button id="preview-button">Preview</button>
 <button id="download-button">Download PDF</button>
-  <div id="preview-area" style="display:none;"></div>  </div>
+<div id="preview-area" style="display:none;"></div>
 
 
 <ul id="notes-list"></ul>
 
 
 <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
-<script src="script.js"></script>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbmjtWHjQBzRdqtPd3ogBlegHnAI2uPkcVvAHU2KdVpRwtBhsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+  // ... (JavaScript code from updated script.js) ...
 
-
-    //Preview Functionality
-
-    const previewButton = document.getElementById('preview-button');
+        const previewButton = document.getElementById('preview-button');
     const previewArea = document.getElementById('preview-area');
 
     previewButton.addEventListener('click', () => {
       const notes = Array.from(document.querySelectorAll('.note')).map(note => note.textContent.trim());
-        const combinedNotes = notes.join('\n\n');  // Combine notes with line breaks
+
+        previewArea.innerHTML = ""; // Clear Previous content
+
+        notes.forEach(note => {
+           const noteElement = document.createElement('p')
+            noteElement.classList.add('note');  //add note class for styling
+            noteElement.textContent = note;
+            previewArea.appendChild(noteElement)
 
 
-
-      previewArea.textContent = combinedNotes;
+        });
       previewArea.style.display = 'block';
-
-
-      // Add styling to the preview area
-      const previewStyle = document.createElement('style');
-
-      // Customize the CSS for the PDF as needed
-       previewStyle.textContent = `
-          body {
-            font-family: Arial, sans-serif;
-           }
-           .note{
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            padding: 10px;
-           }
-
-       `;
-      previewArea.appendChild(previewStyle)
-
-
 
     });
 
@@ -135,8 +103,6 @@
 
 
         });
-
-
 
 </script>
 
