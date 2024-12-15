@@ -1,79 +1,144 @@
-body {
-  font-family: 'Arial', sans-serif; 
-  line-height: 1.6;
-  margin: 20px;
-  background-color: #f4f4f4; 
-  color: #333;
-}
-
-h1 {
-    text-align: center;
-    color: #2c3e50;  
-    margin-bottom: 20px;
-}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Note Taker</title>
+  <link rel="stylesheet" href="style.css">
 
 
-#new-note {
-  width: 100%;
-  height: 150px;  
-  padding: 15px;
-  border: 1px solid #ddd;   
-  box-sizing: border-box;
-  margin-bottom: 15px;
-  font-size: 16px;
-  resize: vertical;  
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);  
-}
+    <style>
+
+        /* Basic style for the edit input area */
+        .edit-input{
+            width: 100%;
+            height: 100px;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+        }
+
+        #preview-area {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+
+        }
+
+        .hashtag {
+            background-color: #eee;
+            padding: 5px 10px;
+            margin-right: 5px;
+            border-radius: 5px;
+            cursor: pointer; /* Make hashtags clickable */
+        }
+        #emoji-button {
+            font-size: 20px;
+            margin-left: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+
+        }
 
 
-#save-button {
-    background-color: #27ae60;  
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;  
-}
+    </style>
+</head>
+<body>
 
-#save-button:hover {
-  background-color: #219150;  
-}
+<h1>My Notes</h1>
 
-#notes-list {
-  list-style: none;
-  padding: 0;
-}
+<textarea id="new-note" placeholder="Enter your note here..."></textarea>
 
-.note {
-  background-color: white;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);  
-  word-wrap: break-word;   
-}
+<button id="save-button">Save Note</button>
+<button id="emoji-button">😀</button> <div id="hashtags"></div>
+
+<button id="preview-button">Preview</button>
+<button id="download-button">Download PDF</button>
+  <div id="preview-area" style="display:none;"></div>  </div>
 
 
-.delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    background-color: #c0392b;   
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
+<ul id="notes-list"></ul>
 
-.delete-button:hover {
-  background-color: #b03021;
-}
 
-/* Basic style for the edit input area */
+<script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
+<script src="script.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbmjtWHjQBzRdqtPd3ogBlegHnAI2uPkcVvAHU2KdVpRwtBhsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+
+    //Preview Functionality
+
+    const previewButton = document.getElementById('preview-button');
+    const previewArea = document.getElementById('preview-area');
+
+    previewButton.addEventListener('click', () => {
+      const notes = Array.from(document.querySelectorAll('.note')).map(note => note.textContent.trim());
+        const combinedNotes = notes.join('\n\n');  // Combine notes with line breaks
+
+
+
+      previewArea.textContent = combinedNotes;
+      previewArea.style.display = 'block';
+
+
+      // Add styling to the preview area
+      const previewStyle = document.createElement('style');
+
+      // Customize the CSS for the PDF as needed
+       previewStyle.textContent = `
+          body {
+            font-family: Arial, sans-serif;
+           }
+           .note{
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+           }
+
+       `;
+      previewArea.appendChild(previewStyle)
+
+
+
+    });
+
+
+
+
+      // Download as PDF
+      const downloadButton = document.getElementById('download-button');
+
+        downloadButton.addEventListener('click', () => {
+            const element = document.getElementById('preview-area');
+
+            if(element.textContent){
+                const opt = {
+                    margin:       1,
+                    filename:     'my_notes.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 }, //increase scale for better quality
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+
+                  // New Promise-based usage:
+                  html2pdf().from(element).set(opt).save();
+
+
+            }
+
+
+
+        });
+
+
+
+</script>
+
+</body>
+</html>
