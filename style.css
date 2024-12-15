@@ -1,54 +1,28 @@
-/* Basic styling - customize as desired */
-body {
-  font-family: sans-serif;
-}
-
-.container {
-    width: 500px;
-    margin: 50px auto;
-    text-align: center; /* Center align the content */
-
-
-}
-textarea {
-  width: 100%;
-  height: 150px;
+/* ... Similar base styles as before ... */
+#note-area{
+    border: 1px solid #ccc;
     padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-
-}
-ul {
-  list-style: none;
-  padding: 0;
-}
-li {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  word-break: break-word; /* Wrap long words */
-  position: relative;  /* For positioning the delete button */
+    min-height: 200px;
+    overflow-y: auto;
+    font-size: 16px; /* Larger font size */
+    line-height: 1.6; /* Improved line height */
+    outline: none;
 
 }
 
-
-button{
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+.toolbar {
+    margin-top: 10px; /* Spacing above the toolbar */
+    text-align: center;
 
 
 
 }
-/* Style for the close button */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-    color: red;
+
+.toolbar button {
+  margin: 0 5px; /* Spacing between buttons */
+
 
 }
+
+
+/* Add styles for saved notes */
