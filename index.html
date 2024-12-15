@@ -1,125 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Simple Note Taker</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-    #new-note {
-      width: 100%;
-      height: 100px;
-      box-sizing: border-box;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    #notes-list {
-      list-style: none;
-      padding: 0;
-    }
-    .note {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-    .delete-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-  </style>
-</head>
-<body>
+body {
+  font-family: 'Arial', sans-serif; 
+  line-height: 1.6;
+  margin: 20px;
+  background-color: #f4f4f4; 
+  color: #333;
+}
 
-  <h1>My Notes</h1>
-
-  <textarea id="new-note" placeholder="Enter your note here..."></textarea>
-  <button id="save-button">Save Note</button>
-
-  <ul id="notes-list"></ul>
-
-  <script>
-    const newNoteInput = document.getElementById('new-note');
-    const saveButton = document.getElementById('save-button');
-    const notesList = document.getElementById('notes-list');
-
-    // Load notes from local storage
-      function loadNotes() {
-        const savedNotes = localStorage.getItem('notes');
-
-    if (savedNotes) {
-        const notesArray = JSON.parse(savedNotes);
-        notesArray.forEach(noteText => {
-        addNoteToList(noteText)
-        });
-    }
-    }
+h1 {
+    text-align: center;
+    color: #2c3e50;  
+    margin-bottom: 20px;
+}
 
 
-    function saveNote() {
-          const noteText = newNoteInput.value.trim();
-
-      if (noteText !== "") {
-
-          addNoteToList(noteText); // Add to the UI immediately
-
-
-          // Save to local storage
-          const savedNotes = localStorage.getItem('notes') || '[]'; // Get existing notes or an empty array
-          const notesArray = JSON.parse(savedNotes); //parse string to array
-          notesArray.push(noteText); // Push new note
-          localStorage.setItem('notes', JSON.stringify(notesArray)); //save to local storage
+#new-note {
+  width: 100%;
+  height: 150px;  
+  padding: 15px;
+  border: 1px solid #ddd;   
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-size: 16px;
+  resize: vertical;  
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);  
+}
 
 
-          newNoteInput.value = '';
-        }
-    }
+#save-button {
+    background-color: #27ae60;  
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;  
+}
+
+#save-button:hover {
+  background-color: #219150;  
+}
+
+#notes-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);  
+  word-wrap: break-word;   
+}
 
 
-    function addNoteToList(noteText) {
-        const newNoteItem = document.createElement('li');
-        newNoteItem.classList.add('note');
-        newNoteItem.textContent = noteText;
+.delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #c0392b;   
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
 
+.delete-button:hover {
+  background-color: #b03021;
+}
 
-          // Add delete button
-          const deleteButton = document.createElement('span');
-          deleteButton.textContent = 'X'; // or use an "X" symbol
-          deleteButton.classList.add('delete-button');
-          deleteButton.addEventListener('click', () => {
-              deleteNote(newNoteItem, noteText);
-
-          });
-        newNoteItem.appendChild(deleteButton);    
-
-        notesList.appendChild(newNoteItem);
-    }
-
-    function deleteNote(noteItem, noteText) {
-        notesList.removeChild(noteItem);  // Remove from UI
-
-        // Remove from local storage
-        const savedNotes = localStorage.getItem('notes') ;
-        const notesArray = JSON.parse(savedNotes);
-
-        const index = notesArray.indexOf(noteText);
-
-        if(index > -1){
-          notesArray.splice(index, 1)
-        }
-
-
-        localStorage.setItem('notes', JSON.stringify(notesArray))
-    }
-
-    saveButton.addEventListener('click', saveNote);
-
-    // Load initial notes on page load
-    loadNotes();
-
-  </script>
-
-</body>
-</html>
+/* Basic style for the edit input area */
