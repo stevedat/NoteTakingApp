@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Note Taker</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+  <title>Note Taker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <div class="container">
-        <h1>My Notes</h1>
-        <textarea id="new-note" placeholder="Enter your note..."></textarea>
-        <button id="save-button">Save</button> <ul id="notes-list"></ul> </div> <script src="script.js"></script> </body> </html>
+  <div class="container">
+    <h1>Notes</h1>
+    <div id="note-area" contenteditable="true" placeholder="Enter your note..."></div>
+    
+    <div class="toolbar">
+        <button id="bold-button">B</button>
+        <button id="italic-button">I</button>
+        <button id="underline-button">U</button>
+        <button id="save-button">Save</button>
+        <button id="new-note-button">New</button>
+      </div>
+
+    <ul id="notes-list"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
