@@ -1,0 +1,77 @@
+body {
+  font-family: 'Arial', sans-serif; /* Use a more common font stack */
+  line-height: 1.6;
+  margin: 20px;
+  background-color: #f4f4f4; /* Light background color */
+  color: #333; /* Dark text color for better contrast */
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50; /* Darker heading color */
+    margin-bottom: 20px;
+}
+
+
+#new-note {
+  width: 100%;
+  height: 150px; /* Increase textarea height */
+  padding: 15px;
+  border: 1px solid #ddd;  /* Subtle border */
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-size: 16px;
+  resize: vertical; /* Allow vertical resizing only */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+
+#save-button {
+    background-color: #27ae60; /* Green button color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+#save-button:hover {
+  background-color: #219150; /* Darker green on hover */
+}
+
+#notes-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow to notes */
+  word-wrap: break-word;  /* Allow long words to wrap */
+}
+
+
+.delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #c0392b;  /* Red background color for delete button*/
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #b03021; /* Darker red on hover */
+}
