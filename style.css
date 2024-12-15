@@ -1,44 +1,52 @@
 body {
-  font-family: 'Arial', sans-serif; /* Use a more common font stack */
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* Modern font stack */
   line-height: 1.6;
-  margin: 20px;
-  background-color: #f4f4f4; /* Light background color */
-  color: #333; /* Dark text color for better contrast */
+  margin: 30px; /* Increased margin */
+  background-color: #f9f9f9; /* Softer background */
+  color: #333;
 }
 
 h1 {
-    text-align: center;
-    color: #2c3e50; /* Darker heading color */
-    margin-bottom: 20px;
+  text-align: center;
+  color: #2c3e50; /* Darker heading */
+  margin-bottom: 30px; /* Increased margin */
+  font-weight: 600; /* Slightly bolder */
 }
-
 
 #new-note {
   width: 100%;
-  height: 150px; /* Increase textarea height */
-  padding: 15px;
-  border: 1px solid #ddd;  /* Subtle border */
+  height: 180px;  /* Taller textarea */
+  padding: 20px; /* Increased padding */
+  border: 1px solid #e0e0e0; /* Lighter border */
   box-sizing: border-box;
-  margin-bottom: 15px;
-  font-size: 16px;
-  resize: vertical; /* Allow vertical resizing only */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  margin-bottom: 20px;
+  font-size: 18px; /* Larger font size */
+  resize: vertical;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+}
+
+#new-note:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* More prominent shadow on focus */
+  border-color: #d0d0d0; /* Slightly darker border on focus */
 }
 
 
 #save-button {
-    background-color: #27ae60; /* Green button color */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
+  background-color: #3498db; /* Blue button */
+  color: white;
+  padding: 12px 20px; /* Increased padding */
+  border: none;
+  cursor: pointer;
+  border-radius: 8px; /* Rounded corners */
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 #save-button:hover {
-  background-color: #219150; /* Darker green on hover */
+  background-color: #2980b9; /* Darker blue on hover */
 }
 
 #notes-list {
@@ -48,30 +56,47 @@ h1 {
 
 .note {
   background-color: white;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 5px;
+  border: 1px solid #e0e0e0; /* Lighter border */
+  padding: 20px; /* Increased padding */
+  margin-bottom: 20px;
+  border-radius: 8px; /* Rounded corners */
   position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow to notes */
-  word-wrap: break-word;  /* Allow long words to wrap */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  word-wrap: break-word;
+  transition: box-shadow 0.3s ease; /* Add transition for hover effect */
 }
 
 
+.note:hover{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* More defined shadow on hover*/
+
+}
+
 .delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    background-color: #c0392b;  /* Red background color for delete button*/
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
+  position: absolute;
+  top: 15px; /* Adjusted position */
+  right: 15px; /* Adjusted position */
+  padding: 8px 12px; /* Increased padding */
+  background-color: #e74c3c; /* Red background */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
 }
 
 .delete-button:hover {
-  background-color: #b03021; /* Darker red on hover */
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+.edit-input {
+    width: 100%;
+    height: 100px;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
 }
